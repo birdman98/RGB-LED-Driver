@@ -1,8 +1,10 @@
 package com.driver.rgbleddriver
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 
 class ColorPickerActivity : AppCompatActivity() {
@@ -14,6 +16,8 @@ class ColorPickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_color_picker)
+
+        val colorPreview = findViewById<TextView>(R.id.colorPreview)
 
 
         val rColorPicker = findViewById<SeekBar>(R.id.rColorPicker)
@@ -27,6 +31,7 @@ class ColorPickerActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 rColor = rColorPicker.progress
+                setTextViewBackgroundColor(colorPreview)
                 Toast.makeText(this@ColorPickerActivity, "Chosen value of R color is " + rColor, Toast.LENGTH_SHORT).show()
             }
         })
@@ -42,6 +47,7 @@ class ColorPickerActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 gColor = gColorPicker.progress
+                setTextViewBackgroundColor(colorPreview)
                 Toast.makeText(this@ColorPickerActivity, "Chosen value of G color is " + gColor, Toast.LENGTH_SHORT).show()
             }
 
@@ -58,11 +64,16 @@ class ColorPickerActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 bColor = bColorPicker.progress
+                setTextViewBackgroundColor(colorPreview)
                 Toast.makeText(this@ColorPickerActivity, "Chosen value of B color is " + bColor, Toast.LENGTH_SHORT).show()
             }
 
         })
 
+    }
+
+    private fun setTextViewBackgroundColor(textView: TextView) {
+        textView.setBackgroundColor(Color.rgb(this.rColor, this.gColor, this.bColor))
     }
 
 }
