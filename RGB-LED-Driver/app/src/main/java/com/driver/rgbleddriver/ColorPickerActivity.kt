@@ -1,8 +1,11 @@
 package com.driver.rgbleddriver
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -69,6 +72,17 @@ class ColorPickerActivity : AppCompatActivity() {
             }
 
         })
+
+        val doneBtn = findViewById<Button>(R.id.doneBtn)
+
+        doneBtn.setOnClickListener { view ->
+            var RGB: Triple<Int, Int, Int> = Triple(rColor, gColor, bColor)
+
+            val mainActivityIntent = Intent()
+            mainActivityIntent.putExtra("RGB", RGB)
+            setResult(Activity.RESULT_OK, mainActivityIntent)
+            finish()
+        }
 
     }
 
