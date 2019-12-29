@@ -1,54 +1,69 @@
 package com.driver.rgbleddriver
 
+import android.os.AsyncTask
 import android.util.Log
 import java.io.*
 import java.net.Socket
-import java.util.*
 
-class ESPConnector {
+class ESPConnector : AsyncTask<Pair<String, Int>, Void, String>() {
+
     private val TAG: String = "ESPConnector"
-    private val espIP: String
-    private val espPORT: Int
+
     private var espConnection: Socket? = null
-    private var output: OutputStream? = null
-    private var input: Scanner? = null
-    private var isConnected: Boolean = false
+    private var output: PrintWriter? = null
+    private var input: BufferedReader? = null
 
-
-    constructor(ip: String, port: Int) {
-        this.espIP = ip
-        this.espPORT = port
-    }
-
-    public fun initializeConnection() {
+    private fun initializeConnection(ip: String, port: Int) {
         try {
-            this.espConnection = Socket(espIP, espPORT)
+            this.espConnection = Socket(ip, port)
+            this.input = BufferedReader(
+                InputStreamReader(
+                    this.espConnection!!.getInputStream()
+                )
+            )
+            this.output = PrintWriter(
+                BufferedWriter(
+                    OutputStreamWriter(
+                        this.espConnection!!.getOutputStream()
+                    )
+                ), true
+            )
         } catch (e: Exception) {
-            Log.e(TAG,"Cannot connect to ESP, reason: " + e.message)
+            Log.e(TAG, "Cannot connect to ESP, reason: " + e.message)
         }
-
     }
 
-    public fun sendResponse(message: String?) {
-        if(message != null) {
-            try {
-                Log.d(TAG, "Sending to ESP: " + message)
-                output!!.write(message.toByteArray())
-                output!!.flush()
-            } catch (e: IOException) {
-                Log.e(TAG, "Failed to send data: " + e.message)
-            }
+    private fun sendRequest(message: String?) {
+        if (message != null) {
+            this.output!!.println(message)
+            Log.d(TAG, "Sent to ESP: " + message)
         }
-
     }
 
-    public fun run() {
+    private fun readResponse(): String {
+        var response: String = ""
         try {
-            this.output = espConnection!!.getOutputStream()
-            this.input = Scanner(espConnection!!.getInputStream())
-        } catch (e: Exception) {
-
+            response = this.input!!.readLine()
+        } catch (e: IOException) {
+            Log.e(TAG, "Cannot read response from ESP, reason: " + e.message)
         }
+        return response
+    }
+
+    private fun closeConnection() {
+        if (this.espConnection != null) {
+            this.espConnection!!.close()
+        }
+    }
+
+    override fun doInBackground(vararg params: Pair<String, Int>?): String {
+        initializeConnection(params[0]!!.first, params[0]!!.second)
+
+        sendRequest("")
+        val response = readResponse()
+
+        closeConnection()
+        return response
     }
 
 }
