@@ -10,7 +10,7 @@
         android:id="@+id/mainTitle"
         android:layout_width="293dp"
         android:layout_height="48dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="50dp"
         android:text="RGB LED Driver Application"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,13 +23,14 @@
         android:id="@+id/rgbPickerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
         android:layout_marginBottom="340dp"
         android:text="RGB Color picker mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+        app:layout_constraintVertical_bias="0.729" />
 
     <Button
         android:id="@+id/musicReactiveBtn"
@@ -39,6 +40,77 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgbPickerBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/rgbPickerBtn"
+        app:layout_constraintVertical_bias="0.134" />
+
+    <TextView
+        android:id="@+id/espIPLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="140dp"
+        android:text="Enter ESP's IP:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/espPortLabel"
+        android:layout_width="104dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="20dp"
+        android:text="Enter ESP's port:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/espIPLabel"
+        app:layout_constraintVertical_bias="0.007" />
+
+    <EditText
+        android:id="@+id/espIPInput"
+        android:layout_width="186dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="124dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@+id/espIPLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/espPortInput"
+        android:layout_width="102dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toEndOf="@+id/espPortLabel"
+        app:layout_constraintTop_toBottomOf="@+id/espIPInput"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="260dp"
+        android:text="CONFIRM ESP's info"
+        app:layout_constraintBottom_toTopOf="@+id/rgbPickerBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/sendBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEND REQUEST"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicReactiveBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
