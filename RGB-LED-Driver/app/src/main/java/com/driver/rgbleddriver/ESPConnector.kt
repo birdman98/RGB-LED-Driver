@@ -5,17 +5,24 @@ import android.util.Log
 import java.io.*
 import java.net.Socket
 
-class ESPConnector : AsyncTask<Pair<String, Int>, Void, String>() {
+class ESPConnector : AsyncTask<String, Void, String> {
 
     private val TAG: String = "ESPConnector"
 
+    private var espIP: String
+    private var espPort: Int
     private var espConnection: Socket? = null
     private var output: PrintWriter? = null
     private var input: BufferedReader? = null
 
-    private fun initializeConnection(ip: String, port: Int) {
+    constructor(espProperties: Pair<String, Int>?) {
+        this.espIP = espProperties!!.first
+        this.espPort = espProperties!!.second
+    }
+
+    private fun initializeConnection(): Boolean {
         try {
-            this.espConnection = Socket(ip, port)
+            this.espConnection = Socket(this.espIP, this.espPort)
             this.input = BufferedReader(
                 InputStreamReader(
                     this.espConnection!!.getInputStream()
@@ -28,8 +35,10 @@ class ESPConnector : AsyncTask<Pair<String, Int>, Void, String>() {
                     )
                 ), true
             )
+            return true
         } catch (e: Exception) {
             Log.e(TAG, "Cannot connect to ESP, reason: " + e.message)
+            return false
         }
     }
 
@@ -56,14 +65,15 @@ class ESPConnector : AsyncTask<Pair<String, Int>, Void, String>() {
         }
     }
 
-    override fun doInBackground(vararg params: Pair<String, Int>?): String {
-        initializeConnection(params[0]!!.first, params[0]!!.second)
+    override fun doInBackground(vararg params: String?): String {
+        if(initializeConnection()) {
+            sendRequest(params[0])
+            val response = readResponse()
 
-        sendRequest("")
-        val response = readResponse()
+            closeConnection()
+            return response
+        }
 
-        closeConnection()
-        return response
+        return "Cannot connect to ESP!"
     }
-
 }
